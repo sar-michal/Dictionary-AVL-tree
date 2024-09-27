@@ -8,5 +8,4 @@ It is implemented by using an AVL tree and is equipped with functionality such a
   * printing
   * graphing the data structure
 
-<a\>
 The program also contains a function allowing it to read from file and count all word appearances.
