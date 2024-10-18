@@ -1,12 +1,12 @@
-#include "Task3.h"
+#include "Dictionary.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 using namespace std;
 template <typename Key, typename Info>
-void Dictionary<Key, Info>::rotateRight(Node*& nptr)
+void Dictionary<Key, Info>::rotateRight(Node *&nptr)
 {
-    Node* temp = nptr->left;
+    Node *temp = nptr->left;
     nptr->left = temp->right;
     temp->right = nptr;
     nptr->height = 1 + max(height(nptr->left), height(nptr->right));
@@ -15,9 +15,9 @@ void Dictionary<Key, Info>::rotateRight(Node*& nptr)
 }
 
 template <typename Key, typename Info>
-void Dictionary<Key, Info>::rotateLeft(Node*& nptr)
+void Dictionary<Key, Info>::rotateLeft(Node *&nptr)
 {
-    Node* temp = nptr->right;
+    Node *temp = nptr->right;
     nptr->right = temp->left;
     temp->left = nptr;
     nptr->height = 1 + max(height(nptr->left), height(nptr->right));
@@ -26,9 +26,9 @@ void Dictionary<Key, Info>::rotateLeft(Node*& nptr)
 }
 
 template <typename Key, typename Info>
-int Dictionary<Key, Info>::getBalanceFactor(Node* nptr)
+int Dictionary<Key, Info>::getBalanceFactor(Node *nptr)
 {
-    if(!nptr)
+    if (!nptr)
     {
         return 0;
     }
@@ -36,11 +36,11 @@ int Dictionary<Key, Info>::getBalanceFactor(Node* nptr)
 }
 
 template <typename Key, typename Info>
-bool Dictionary<Key, Info>::insertElement(Node*& nptr, const Key& what, const Info& iwhat)
+bool Dictionary<Key, Info>::insertElement(Node *&nptr, const Key &what, const Info &iwhat)
 {
-    if(!nptr)
+    if (!nptr)
     {
-        Node* newNode = new Node;
+        Node *newNode = new Node;
         newNode->key = what;
         newNode->info = iwhat;
         newNode->left = nullptr;
@@ -48,15 +48,16 @@ bool Dictionary<Key, Info>::insertElement(Node*& nptr, const Key& what, const In
         nptr = newNode;
         return true;
     }
-    if(what < nptr->key)
+    if (what < nptr->key)
     {
         insertElement(nptr->left, what, iwhat);
     }
-    else if(what > nptr->key)
+    else if (what > nptr->key)
     {
         insertElement(nptr->right, what, iwhat);
     }
-    else return false;
+    else
+        return false;
 
     nptr->height = 1 + max(height(nptr->left), height(nptr->right));
     balanceSubtree(nptr);
@@ -64,28 +65,29 @@ bool Dictionary<Key, Info>::insertElement(Node*& nptr, const Key& what, const In
 }
 
 template <typename Key, typename Info>
-int Dictionary<Key, Info>::height(Node* nptr)
+int Dictionary<Key, Info>::height(Node *nptr)
 {
-    if(!nptr){
+    if (!nptr)
+    {
         return 0;
     }
     return nptr->height;
 }
 
 template <typename Key, typename Info>
-void Dictionary<Key, Info>::balanceSubtree(Node*& nptr)
+void Dictionary<Key, Info>::balanceSubtree(Node *&nptr)
 {
-    if(getBalanceFactor(nptr) > 1)
+    if (getBalanceFactor(nptr) > 1)
     {
-        if(getBalanceFactor(nptr->left) < 0)
+        if (getBalanceFactor(nptr->left) < 0)
         {
             rotateLeft(nptr->left);
         }
         rotateRight(nptr);
     }
-    else if(getBalanceFactor(nptr) < -1)
+    else if (getBalanceFactor(nptr) < -1)
     {
-        if(getBalanceFactor(nptr->right) > 0)
+        if (getBalanceFactor(nptr->right) > 0)
         {
             rotateRight(nptr->right);
         }
@@ -94,17 +96,17 @@ void Dictionary<Key, Info>::balanceSubtree(Node*& nptr)
 }
 
 template <typename Key, typename Info>
-typename Dictionary<Key, Info>::Node* Dictionary<Key, Info>::findNode(Node* nptr, const Key& what)
+typename Dictionary<Key, Info>::Node *Dictionary<Key, Info>::findNode(Node *nptr, const Key &what)
 {
-    if(!nptr)
+    if (!nptr)
     {
         return nullptr;
     }
-    if(what == nptr->key)
+    if (what == nptr->key)
     {
         return nptr;
     }
-    if(what < nptr->key)
+    if (what < nptr->key)
     {
         return findNode(nptr->left, what);
     }
@@ -112,45 +114,45 @@ typename Dictionary<Key, Info>::Node* Dictionary<Key, Info>::findNode(Node* nptr
 }
 
 template <typename Key, typename Info>
-typename Dictionary<Key, Info>::Node* Dictionary<Key, Info>::getMinimumNode(Node* nptr)
+typename Dictionary<Key, Info>::Node *Dictionary<Key, Info>::getMinimumNode(Node *nptr)
 {
-    if(!nptr)
+    if (!nptr)
     {
         return nullptr;
     }
-    while(nptr->left != nullptr)
+    while (nptr->left != nullptr)
     {
         nptr = nptr->left;
     }
     return nptr;
 }
 template <typename Key, typename Info>
-bool Dictionary<Key, Info>::remove(Node*& nptr, const Key& what)
+bool Dictionary<Key, Info>::remove(Node *&nptr, const Key &what)
 {
-    if(!nptr)
+    if (!nptr)
     {
         return false;
     }
-    if(what < nptr->key)
+    if (what < nptr->key)
     {
-        return remove(nptr->left, what);
+        remove(nptr->left, what);
     }
-    else if(what > nptr->key)
+    else if (what > nptr->key)
     {
-        return remove(nptr->right, what);
+        remove(nptr->right, what);
     }
     else
     {
-        Node* toDelete = nptr;
-        if(!(nptr->left) && !(nptr->right))
+        Node *toDelete = nptr;
+        if (!(nptr->left) && !(nptr->right))
         {
             nptr = nullptr;
         }
-        else if(!nptr->left)
+        else if (!nptr->left)
         {
             nptr = nptr->right;
         }
-        else if(!nptr->right)
+        else if (!nptr->right)
         {
             nptr = nptr->left;
         }
@@ -171,9 +173,9 @@ bool Dictionary<Key, Info>::remove(Node*& nptr, const Key& what)
 }
 
 template <typename Key, typename Info>
-void Dictionary<Key, Info>::clearContents(Node* nptr) 
+void Dictionary<Key, Info>::clearContents(Node *nptr)
 {
-    if(!nptr)
+    if (!nptr)
     {
         return;
     }
@@ -183,22 +185,24 @@ void Dictionary<Key, Info>::clearContents(Node* nptr)
 }
 template <typename Key, typename Info>
 
-Dictionary<Key, Info>::Dictionary():root(nullptr){}
+Dictionary<Key, Info>::Dictionary() : root(nullptr)
+{
+}
 
 template <typename Key, typename Info>
-Dictionary<Key, Info>::Dictionary(const Dictionary& toCopy)
+Dictionary<Key, Info>::Dictionary(const Dictionary &toCopy)
 {
-    root=nullptr;
+    root = nullptr;
     copySubtree(root, toCopy.root);
 }
 template <typename Key, typename Info>
-void Dictionary<Key, Info>::copySubtree(Node*& nptr, Node* toCopy) 
+void Dictionary<Key, Info>::copySubtree(Node *&nptr, Node *toCopy)
 {
-    if(!toCopy)
+    if (!toCopy)
     {
         return;
     }
-    Node* newNode = new Node;
+    Node *newNode = new Node;
     nptr = newNode;
     nptr->key = toCopy->key;
     nptr->info = toCopy->info;
@@ -210,9 +214,9 @@ void Dictionary<Key, Info>::copySubtree(Node*& nptr, Node* toCopy)
 }
 
 template <typename Key, typename Info>
-Dictionary<Key, Info>& Dictionary<Key, Info>::operator=(const Dictionary& toCopy)
+Dictionary<Key, Info> &Dictionary<Key, Info>::operator=(const Dictionary &toCopy)
 {
-    if(this == &toCopy)
+    if (this == &toCopy)
     {
         return *this;
     }
@@ -222,16 +226,16 @@ Dictionary<Key, Info>& Dictionary<Key, Info>::operator=(const Dictionary& toCopy
 }
 
 template <typename Key, typename Info>
-void Dictionary<Key, Info>::insertElement(const Key& what, const Info& iwhat)
+void Dictionary<Key, Info>::insertElement(const Key &what, const Info &iwhat)
 {
     insertElement(root, what, iwhat);
 }
 
 template <typename Key, typename Info>
-bool Dictionary<Key, Info>::updateInfo(const Key& what, Info newInfo)
+bool Dictionary<Key, Info>::updateInfo(const Key &what, Info newInfo)
 {
-    Node* found = findNode(root, what);
-    if(!found)
+    Node *found = findNode(root, what);
+    if (!found)
     {
         return false;
     }
@@ -240,10 +244,10 @@ bool Dictionary<Key, Info>::updateInfo(const Key& what, Info newInfo)
 }
 
 template <typename Key, typename Info>
-bool Dictionary<Key, Info>::search(const Key& what, Info& toReturn)
+bool Dictionary<Key, Info>::search(const Key &what, Info &toReturn)
 {
-    Node* found = findNode(root, what);
-    if(!found)
+    Node *found = findNode(root, what);
+    if (!found)
     {
         return false;
     }
@@ -252,26 +256,26 @@ bool Dictionary<Key, Info>::search(const Key& what, Info& toReturn)
 }
 
 template <typename Key, typename Info>
-bool Dictionary<Key, Info>::remove(const Key& what)
+bool Dictionary<Key, Info>::remove(const Key &what)
 {
     return remove(root, what);
 }
 
-template<typename Key, typename Info>
+template <typename Key, typename Info>
 void Dictionary<Key, Info>::printInOrder()
 {
     Dictionary<Key, Info>::printInOrder(root);
 }
 
-template<typename Key, typename Info>
-void Dictionary<Key, Info>::printInOrder(Node* nptr)
+template <typename Key, typename Info>
+void Dictionary<Key, Info>::printInOrder(Node *nptr)
 {
-    if(!nptr)
+    if (!nptr)
     {
         return;
     }
     printInOrder(nptr->left);
-    cout<<nptr->key<<" "<<nptr->info<<endl;
+    cout << nptr->key << " " << nptr->info << endl;
     printInOrder(nptr->right);
 }
 
@@ -283,39 +287,41 @@ void Dictionary<Key, Info>::clearContents()
 }
 
 template <typename Key, typename Info>
-void Dictionary<Key, Info>::graph(ostream & out)
+void Dictionary<Key, Info>::graph(ostream &out)
 {
     graph(out, 0, root);
 }
 
 template <typename Key, typename Info>
-void Dictionary<Key, Info>::graph(ostream & out, int indent, Dictionary<Key, Info>::Node* nptr)
+void Dictionary<Key, Info>::graph(ostream &out, int indent, Dictionary<Key, Info>::Node *nptr)
 {
     if (!nptr)
     {
         return;
     }
     graph(out, indent + 8, nptr->right);
-    out << setw(indent) << " " << nptr->key << endl;
+    // out << setw(indent) << " " << nptr->key << endl;
+    out << std::setw(indent) << " " << nptr->key << std::endl;
     graph(out, indent + 8, nptr->left);
 }
-bool readFromFile(Dictionary<string, int>& where, string fileName)
+bool readFromFile(Dictionary<string, int> &where, string fileName)
 {
     ifstream file;
     file.open(fileName);
-    if(!file)
+    if (!file)
     {
         return false;
     }
     string word;
     int count;
-    while(file >> word)
+    while (file >> word)
     {
-        if(where.search(word, count))
+        if (where.search(word, count))
         {
-            where.updateInfo(word, count+1);
+            where.updateInfo(word, count + 1);
         }
-        else{
+        else
+        {
             where.insertElement(word, 1);
         }
     }
