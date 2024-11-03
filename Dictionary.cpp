@@ -300,8 +300,7 @@ void Dictionary<Key, Info>::graph(ostream &out, int indent, Dictionary<Key, Info
         return;
     }
     graph(out, indent + 8, nptr->right);
-    // out << setw(indent) << " " << nptr->key << endl;
-    out << std::setw(indent) << " " << nptr->key << std::endl;
+    out << setw(indent) << " " << nptr->key << endl;
     graph(out, indent + 8, nptr->left);
 }
 bool readFromFile(Dictionary<string, int> &where, string fileName)
